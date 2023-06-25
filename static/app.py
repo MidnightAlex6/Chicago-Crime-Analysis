@@ -1,4 +1,3 @@
-
 import numpy as np
 import json
 
@@ -56,12 +55,11 @@ def crimesLoc():
     return jsonify(locationdesc_list)
 
 @app.route("/api/v1.0/barcharts")
-def others():
+def crimesBar():
     # Create our session (link) from Python to the DB
     session = Session(engine)
     """Return a list of all suicides by country"""
     # Query all suicide data
-    # results = session.query(Crimes.ID, Crimes.LocationDescription, Crimes.PrimaryType).all()
     results = session.query(Crimes.ID,Crimes.LocationDescription, Crimes.PrimaryType, func.count(Crimes.PrimaryType)).group_by(Crimes.LocationDescription, Crimes.PrimaryType).order_by(Crimes.LocationDescription.asc(), func.count(Crimes.PrimaryType).desc()).all()
     print(results)
     session.close()
@@ -100,10 +98,6 @@ def crimesLoc():
 def crimesHeat():
     # Create our session (link) from Python to the DB
     session = Session(engine)
-
-    # Query all primary types of crime
-    primary_types = session.query(Crimes.PrimaryTypes).distinct().all()
-    primary_types = [result[0] for result in primary_types]
     
     # Retrieve all rows and aggregate "primary type" for the heatmap
     results = session.query(Crimes.Location, Crimes.PrimaryType).all()
@@ -120,6 +114,24 @@ def crimesHeat():
         heat_data[PrimaryType].append(Location)
 
     return jsonify(heat_data)
+
+@app.route("/api/v1.0/dropdown3")
+def crimesLoc():
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    # Query all crime location descriptions
+    results = session.query(Crimes.Location).distinct(Crimes.Location).order_by(Crimes.Location.asc()).all()
+    print(results)
+    session.close()
+    
+    # Convert list of tuples into normal list
+    location_list = []
+    for Location in results:
+        
+        location_list.append(Location[0])
+
+    return jsonify(location_list)
 
 if __name__ == '__main__':
     app.run(debug=True)

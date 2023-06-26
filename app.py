@@ -40,7 +40,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db = SQLAlchemy(app)
 
-
+# "old" API for heatmap with dropdown box
 
 @app.route("/")
 def welcome():
@@ -76,7 +76,36 @@ def query_database(query):
     data = cursor.fetchall()
     conn.close()
     return data
+# updated API route for heatmap with dropdown box
 
+@app.route('/api/primary_types', methods=['GET'])
+def get_primary_types():
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    
+    # Fetch primary types, counts, latitude, and longitude
+    query = "SELECT PrimaryType, COUNT(*) as Count, Latitude, Longitude FROM Clear_Crimes_2023 GROUP BY PrimaryType"
+    cursor.execute(query)
+    results = cursor.fetchall()
+    
+    # Extract primary types, counts, latitude, and longitude from the results
+    primary_types = [row[0] for row in results]
+    counts = [row[1] for row in results]
+    latitudes = [row[2] for row in results]
+    longitudes = [row[3] for row in results]
+    
+    # Create a list of dictionaries with primary types, counts, latitude, and longitude
+    data = [
+        {"PrimaryType": ptype, "Count": count, "Latitude": lat, "Longitude": lon}
+        for ptype, count, lat, lon in zip(primary_types, counts, latitudes, longitudes)
+    ]
+    
+    conn.close()
+    
+    return jsonify(data)
+
+if __name__ == '__main__':
+    app.run()
 @app.route("/api/data")
 def get_data():
     # Fetch distinct values from the "Primary Type" column

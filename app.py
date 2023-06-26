@@ -142,6 +142,45 @@ def get_data():
 
     return jsonify(heat_data)
 
+# extract month and add month data to API - we just need to change the name of API
+
+@app.route('/api/primary_types', methods=['GET'])
+def get_primary_types():
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    
+    # Fetch primary types, counts, latitude, longitude, and date
+    query = "SELECT PrimaryType, COUNT(*) as Count, Latitude, Longitude, `Date(mm/dd/aaaa)` FROM Clear_Crimes_2023 GROUP BY PrimaryType"
+    cursor.execute(query)
+    results = cursor.fetchall()
+    
+    # Extract primary types, counts, latitude, longitude, and month from the results
+    primary_types = [row[0] for row in results]
+    counts = [row[1] for row in results]
+    latitudes = [row[2] for row in results]
+    longitudes = [row[3] for row in results]
+    dates = [row[4] for row in results]
+    
+    # Extract the month from the date column
+    months = [date.split('/')[0] for date in dates]
+    
+    # Create a list of dictionaries with primary types, counts, latitude, longitude, and month
+    data = [
+        {"PrimaryType": ptype, "Count": count, "Latitude": lat, "Longitude": lon, "Month": month}
+        for ptype, count, lat, lon, month in zip(primary_types, counts, latitudes, longitudes, months)
+    ]
+    
+    conn.close()
+    
+    return jsonify(data)
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+if __name__ == '__main__':
+    app.run()
+
 @app.route("/")
 def index():
     return render_template("index.html")

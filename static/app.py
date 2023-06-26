@@ -37,7 +37,7 @@ def welcome():
 
 
 @app.route("/api/v1.0/dropdown1")
-def crimesLoc():
+def crimesLoc1():
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
@@ -77,7 +77,7 @@ def crimesBar():
 
 
 @app.route("/api/v1.0/dropdown2")
-def crimesLoc():
+def crimesLoc2():
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
@@ -115,23 +115,23 @@ def crimesHeat():
 
     return jsonify(heat_data)
 
-@app.route("/api/v1.0/dropdown3")
-def crimesLoc():
-    # Create our session (link) from Python to the DB
-    session = Session(engine)
+# @app.route("/api/v1.0/dropdown3")
+# def crimesLoc():
+#     # Create our session (link) from Python to the DB
+#     session = Session(engine)
 
-    # Query all crime location descriptions
-    results = session.query(Crimes.Location).distinct(Crimes.Location).order_by(Crimes.Location.asc()).all()
-    print(results)
-    session.close()
+#     # Query all crime locations with month column
+#     results = session.query(func.strftime('%m', Crimes.Date)).distinct(func.strftime('%m', Crimes.Date)).all()
+#     print(results)
+#     session.close()
     
-    # Convert list of tuples into normal list
-    location_list = []
-    for Location in results:
+#     # Convert list of tuples into normal list
+#     month_list = []
+#     for Date in results:
         
-        location_list.append(Location[0])
+#         month_list.append(Date[0])
 
-    return jsonify(location_list)
+#     return jsonify(month_list)
 
 if __name__ == '__main__':
     app.run(debug=True)

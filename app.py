@@ -80,17 +80,17 @@ def dropdown2():
     session = Session(engine)
 
     # Query all crime location descriptions
-    results = session.query(Crimes.LocationDescription).distinct(Crimes.LocationDescription).order_by(Crimes.LocationDescription.asc()).all()
+    results = session.query(Crimes.PrimaryType).distinct(Crimes.PrimaryType).order_by(Crimes.PrimaryType.asc()).all()
     print(results)
     session.close()
     
     # Convert list of tuples into normal list
-    locationdesc_list = []
-    for LocationDescription in results:
+    primarytype_list = []
+    for PrimaryType in results:
         
-        locationdesc_list.append(LocationDescription[0])
+        primarytype_list.append(PrimaryType[0])
 
-    return jsonify(locationdesc_list)
+    return jsonify(primarytype_list)
 
 @app.route("/api/v1.0/heatmap1")
 def heatmap1():
@@ -98,13 +98,14 @@ def heatmap1():
     session = Session(engine)
     
     # Retrieve all rows and aggregate "primary type" for the heatmap
-    results = session.query(Crimes.Location, Crimes.PrimaryType).all()
+    results = session.query(Crimes.ID, Crimes.PrimaryType, Crimes.Latitude, Crimes.Longitude).all()
     # Prepare the data for the heatmap
     heat_data = []
-    for Location, PrimaryType in results:
+    for PrimaryType, Latitude, Longitude in results:
         heatdata_dict = {}
-        heatdata_dict["Location"] = Location
         heatdata_dict["Primary Type"] = PrimaryType
+        heatdata_dict["Latitude"] = Latitude
+        heatdata_dict["Longitude"] = Longitude
         
         heat_data.append(heatdata_dict)
 
@@ -132,23 +133,20 @@ def dropdown3():
 def heatmap2():
     # Create our session (link) from Python to the DB
     session = Session(engine)
-
-    # Query all crime locations with month column
-    results = session.query(Crimes.PrimaryType, Crimes.Location,Crimes.Month).all()
-    print(results)
-    session.close()
     
-    # Convert list of tuples into normal list
-    month_data = []
-    for PrimaryType, Location, Month in results:
-        monthdata_dict = {}
-        monthdata_dict["Primary Type"] = PrimaryType
-        monthdata_dict["Location"] = Location
-        monthdata_dict["Month"] = Month
+    # Retrieve all rows and aggregate "primary type" for the heatmap
+    results = session.query(Crimes.Latitude, Crimes.Longitude, Crimes.Month).all()
+    # Prepare the data for the heatmap
+    heat_data = []
+    for Latitude, Longitude, Month in results:
+        heatdata_dict = {}
+        heatdata_dict["Latitude"] = Latitude
+        heatdata_dict["Longitude"] = Longitude
+        heatdata_dict["Month"] = Month
         
-        month_data.append(monthdata_dict)
+        heat_data.append(heatdata_dict)
 
-    return jsonify(month_data)
+    return jsonify(heat_data)
 
 if __name__ == '__main__':
     app.run(debug=True)

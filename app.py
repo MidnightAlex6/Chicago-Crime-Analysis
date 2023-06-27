@@ -14,7 +14,7 @@ from flask import Flask, jsonify, render_template
 #################################################
 # Database Setup
 #################################################
-engine = create_engine("sqlite:///crimes_2023db.db")
+engine = create_engine("sqlite:///crimes_2023db")
 
 # reflect an existing database into a new model
 Base = automap_base()
@@ -33,12 +33,40 @@ app = Flask(__name__)
 
 from flask_sqlalchemy import SQLAlchemy
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '') or "sqlite:///db.sqlite"
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///crimes_2023db.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///crimes_2023db"
 
 # Remove tracking modifications
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db = SQLAlchemy(app)
+
+from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+class crimes_2023db(Base):
+    __tablename__ = 'Clear_Crimes_2023'
+
+    ID = Column(Integer, primary_key=True)
+    PrimaryType = Column(String)
+    Description = Column(String)
+    LocationDescription = Column(String)
+    Arrest = Column(String)
+    Domestic = Column(String)
+    Beat = Column(Integer)
+    District = Column(Integer)
+    Ward = Column(Float)
+    CommunityArea = Column(Integer)
+    FBICode = Column(String)
+    XCoordinate = Column(Float)
+    YCoordinate = Column(Float)
+    Year = Column(Integer)
+    Latitude = Column(Float)
+    Longitude = Column(Float)
+    Location = Column(String)
+    Date = Column(String)
+    Time = Column(String)
 
 # "old" API for heatmap with dropdown box
 
@@ -47,7 +75,7 @@ def welcome():
     return render_template("index.html")
 
 # Fetch distinct values from the "primary type" column
-primary_types = db.session.query(crimes_2023db.db.primary_types).distinct().all()
+primary_types = db.session.query(crimes_2023db.PrimaryType).distinct().all()
 primary_types = [result[0] for result in primary_types]
     # Retrieve all rows and aggregate "primary type" for the heatmap
 results = db.session.query(crimes_2023db.db.Latitude, crimes_2023db.db.Longitude, crimes_2023db.db.PrimaryType).all()

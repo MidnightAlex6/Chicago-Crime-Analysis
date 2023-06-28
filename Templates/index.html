@@ -49,6 +49,23 @@
         <div id="bar"></div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 well">
+        <h3>Crimes by Month:</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <select id="selDataset3" onchange="optionChanged3(this.value)">
+          <!-- Options will be populated dynamically using Flask API -->
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="map2"></div>
+      </div>
+    </div>
   </div>
   <!-- JavaScript file -->
   <script type="text/javascript" src="./static/js/crime_heatmap.js"></script>

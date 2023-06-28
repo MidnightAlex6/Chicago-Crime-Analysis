@@ -36,117 +36,126 @@ def welcome():
     return render_template("index.html")
 
 
-@app.route("/api/v1.0/dropdown1")
-def dropdown1():
+@app.route("/api/v1.0/crime_heatmap_dropdown")
+def names():
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
-    # Query all crime location descriptions
-    results = session.query(Crimes.LocationDescription).distinct(Crimes.LocationDescription).order_by(Crimes.LocationDescription.asc()).all()
-    session.close()
-    
-    # Convert list of tuples into normal list
-    locationdesc_list = []
-    for LocationDescription in results:
-        
-        locationdesc_list.append(LocationDescription[0])
-
-    return jsonify(locationdesc_list)
-
-@app.route("/api/v1.0/barcharts")
-def barcharts():
-    # Create our session (link) from Python to the DB
-    session = Session(engine)
-    """Return a list of all suicides by country"""
-    results = session.query(Crimes.ID,Crimes.LocationDescription, Crimes.PrimaryType, func.count(Crimes.PrimaryType)).group_by(Crimes.LocationDescription, Crimes.PrimaryType).order_by(Crimes.LocationDescription.asc(), func.count(Crimes.PrimaryType).desc()).all()
-    print(results)
-    session.close()
-    # Convert list of tuples into normal list
-    all_crimes = []
-    for ID, LocationDescription, PrimaryType, i in results:
-        crimes_dict = {}
-        crimes_dict["ID"] = ID
-        crimes_dict["LocationDescription"] = LocationDescription
-        crimes_dict["PrimaryType"] = PrimaryType
-        crimes_dict["i"] = i
-        all_crimes.append(crimes_dict)
-        # all_crimes.append(i[0])
-    return jsonify(all_crimes)
-
-
-@app.route("/api/v1.0/dropdown2")
-def dropdown2():
-    # Create our session (link) from Python to the DB
-    session = Session(engine)
-
-    # Query all crime location descriptions
+    # Return a list of
+    # Query all crime data data
+    # results = session.query(Crimes.ID, Crimes.PrimaryType, Crimes.Latitude, Crimes.Longitude).all()
     results = session.query(Crimes.PrimaryType).distinct(Crimes.PrimaryType).order_by(Crimes.PrimaryType.asc()).all()
     print(results)
     session.close()
     
     # Convert list of tuples into normal list
-    primarytype_list = []
+    all_crimes = []
     for PrimaryType in results:
         
-        primarytype_list.append(PrimaryType[0])
+        all_crimes.append(PrimaryType[0])
 
-    return jsonify(primarytype_list)
+    return jsonify(all_crimes)
 
-@app.route("/api/v1.0/heatmap1")
-def heatmap1():
+@app.route("/api/v1.0/chicago_crime_heatmap")
+def others():
     # Create our session (link) from Python to the DB
     session = Session(engine)
-    
-    # Retrieve all rows and aggregate "primary type" for the heatmap
-    results = session.query(Crimes.ID, Crimes.PrimaryType, Crimes.Latitude, Crimes.Longitude).all()
-    # Prepare the data for the heatmap
-    heat_data = []
+    # Query all crime data
+    # results = session.query(Crimes.ID, Crimes.PrimaryType, Crimes.Latitude, Crimes.Longitude).all()
+    results = session.query(Crimes.PrimaryType, Crimes.Latitude, Crimes.Longitude).order_by(Crimes.PrimaryType.asc())
+    print(results)
+    session.close()
+    # Convert list of tuples into normal list
+    all_crimes = []
     for PrimaryType, Latitude, Longitude in results:
-        heatdata_dict = {}
-        heatdata_dict["Primary Type"] = PrimaryType
-        heatdata_dict["Latitude"] = Latitude
-        heatdata_dict["Longitude"] = Longitude
-        
-        heat_data.append(heatdata_dict)
+        crimes_dict = {}
+        #crimes_dict["ID"] = ID
+        crimes_dict["PrimaryType"] = PrimaryType
+        crimes_dict["Latitude"] = Latitude
+        crimes_dict["Longitude"] = Longitude
+        all_crimes.append(crimes_dict)
+    return jsonify(all_crimes)
 
-    return jsonify(heat_data)
-
-@app.route("/api/v1.0/dropdown3")
-def dropdown3():
+@app.route("/api/v1.0/dropdown")
+def names2():
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
-    # Query all crime locations with month column
-    results = session.query(Crimes.Month).distinct(Crimes.Month).all()
+    # Query data
+    results = session.query(Crimes.LocationDescription).distinct(Crimes.LocationDescription).order_by(Crimes.LocationDescription.asc()).all()
+    
+    session.close()
+    
+    # Convert list of tuples into normal list
+    all_crimes = []
+    for LocationDescription in results:
+
+        all_crimes.append(LocationDescription[0])
+
+    return jsonify(all_crimes)
+
+@app.route("/api/v1.0/barcharts")
+def others2():
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    """Return a list of all suicides by country"""
+    # Query all suicide data
+    # results = session.query(Crimes.ID, Crimes.LocationDescription, Crimes.PrimaryType).all()
+    results = session.query(Crimes.LocationDescription, Crimes.PrimaryType, func.count(Crimes.PrimaryType)).group_by(Crimes.LocationDescription, Crimes.PrimaryType).order_by(Crimes.LocationDescription.asc(), func.count(Crimes.PrimaryType).desc()).all()
     print(results)
     session.close()
     
     # Convert list of tuples into normal list
-    month_list = []
-    for Date in results:
-        
-        month_list.append(Date[0])
+    all_crimes = []
+    for LocationDescription, PrimaryType, i in results:
+        crimes_dict = {}
+        crimes_dict["LocationDescription"] = LocationDescription
+        crimes_dict["PrimaryType"] = PrimaryType
+        crimes_dict["counts"] = i
+        all_crimes.append(crimes_dict)
 
-    return jsonify(month_list)
+    return jsonify(all_crimes)
 
-@app.route("/api/v1.0/heatmap2")
-def heatmap2():
+@app.route("/api/v1.0/Month_heatmap_dropdown")
+def names3():
     # Create our session (link) from Python to the DB
     session = Session(engine)
-    
-    # Retrieve all rows and aggregate "primary type" for the heatmap
-    results = session.query(Crimes.Latitude, Crimes.Longitude, Crimes.Month).all()
-    # Prepare the data for the heatmap
-    heat_data = []
-    for Latitude, Longitude, Month in results:
-        heatdata_dict = {}
-        heatdata_dict["Latitude"] = Latitude
-        heatdata_dict["Longitude"] = Longitude
-        heatdata_dict["Month"] = Month
-        
-        heat_data.append(heatdata_dict)
 
-    return jsonify(heat_data)
+    # Return a list of
+    # Query all crime data data
+    # results = session.query(Crimes.ID, Crimes.PrimaryType, Crimes.Latitude, Crimes.Longitude).all()
+    results = session.query(Crimes.Month).distinct(Crimes.Month).order_by(Crimes.Month).all()
+    print(results)
+    session.close()
+    
+    # Convert list of tuples into normal list
+    all_crimes3 = []
+    for Month in results:
+        
+        all_crimes3.append(Month[0])
+
+    return jsonify(all_crimes3)
+
+@app.route("/api/v1.0/chicago_time_heatmap")
+def others3():
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+    # Query all crime data
+    # results = session.query(Crimes.ID, Crimes.PrimaryType, Crimes.Latitude, Crimes.Longitude).all()
+    results = session.query(Crimes.Month, Crimes.Latitude, Crimes.Longitude).order_by(Crimes.Month.asc())
+    print(results)
+    session.close()
+    # Convert list of tuples into normal list
+    all_crimes = []
+    for Month, Latitude, Longitude in results:
+        crimes_dict = {}
+        #crimes_dict["ID"] = ID
+        crimes_dict["Month"] = Month
+        crimes_dict["Latitude"] = Latitude
+        crimes_dict["Longitude"] = Longitude
+        all_crimes.append(crimes_dict)
+    return jsonify(all_crimes)
 
 if __name__ == '__main__':
     app.run(debug=True)

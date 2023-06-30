@@ -125,6 +125,41 @@ Make a GET request to /api/v1.0/dropdown to retrieve the list of location descri
 
 - Define the getLocationCoordinates(locationString) function to extract latitude and longitude from a location string.
 
+### HTML
+
+- The HTML code sets up a web page for a Crime In Chicago Dashboard.
+
+- The required CSS and JavaScript dependencies (Bootstrap, Leaflet, D3, and Plotly) are included via external links.
+
+- The page structure consists of a container with rows and columns for different sections.
+
+- The "jumbotron" section displays the title and description of the dashboard.
+
+- The "Primary Type Of Crime" section includes a dropdown menu (select element) with id "selDataset1" to select the primary type of crime. It has an onchange event listener to trigger the "optionChanged1" function when the selection changes.
+
+- The "map" section is a placeholder div with id "map" where the Leaflet map will be rendered.
+
+- The "Crime Locations" section includes a dropdown menu (select element) with id "selDataset2" to select crime locations. It has an onchange event listener to trigger the "optionChanged2" function when the selection changes.
+
+- The "bar" section is a placeholder div with id "bar" where the Plotly bar chart will be rendered.
+
+- The "Crimes by Month" section includes a dropdown menu (select element) with id "selDataset3" to select months. It has an onchange event listener to trigger the "optionChanged3" function when the selection changes.
+
+- The "map2" section is a placeholder div with id "map2" where the second Leaflet map will be rendered.
+
+- The JavaScript files are included at the end, with "crime_heatmap.js" containing the code to handle the interactive functionality of the dashboard, such as populating dropdowns, handling dropdown changes, and rendering the maps and charts.
+
+### CSS Styling 
+
+- Set the padding and margin of the body element to 0 pixels.
+
+- Set the height of the #map, body, and html elements to 500 pixels.
+
+- Set the height of the #map2, body, and html elements to 500 pixels.
+
+
+
+
 
 
 

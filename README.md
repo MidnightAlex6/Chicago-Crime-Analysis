@@ -8,11 +8,11 @@ The City of Chicago has a historical reputation for violent crime. Our group was
 
 ## Collaborators
 
-- Alex Valerio
-- Zunyan Guo
-- Cara Boldarini
-- Lisa Maccio Maretto
-- Sanja Kesic
+- [Alex Valerio](https://github.com/MidnightAlex6) 
+- [Zunyan Guo](https://github.com/ZunyanGuo)
+- [Cara Boldarini](https://github.com/careah)
+- [Lisa Maccio Maretto](https://github.com/lmacciomaretto)
+- [Sanja Kesic](https://github.com/SanjaKesic)
 
 ## File Structure
 

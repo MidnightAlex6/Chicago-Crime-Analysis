@@ -1,0 +1,16 @@
+body {
+    padding: 0px;
+    margin: 0px;
+  }
+  
+  #map,
+  body,
+  html {
+    height: 500px;
+  }
+
+  #map2,
+  body,
+  html {
+    height: 500px;
+  }

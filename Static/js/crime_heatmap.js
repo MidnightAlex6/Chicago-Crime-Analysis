@@ -1,5 +1,6 @@
 let heatLayer; // Declare a variable to store the heatmap layer
 
+// create dropdown/select menu containing primary type of crime heat map
 function init() {
   // This checks that our initial function runs.
   console.log("The Init() function ran");
@@ -19,7 +20,7 @@ function init() {
       console.error("Error retrieving dropdown data:", error);
     });
 
-  // create dropdown/select
+  // create dropdown/select menu containing location description for bar chart
   d3.json("/api/v1.0/dropdown").then(i => {
     // Get the dropdown/select element
     let dropdownMenu2 = d3.select("#selDataset2")
@@ -30,12 +31,13 @@ function init() {
     .attr("value", d => d)
     .text(d =>  d);
   });
+
   // run functions to generate plots with default location = "STREET"
   createBar('ABANDONED BUILDING');
   // loads arson heatmap
   heatmap("ARSON");
 
-  // Create dropdown/select
+  // Create dropdown/select menu containing months for heat map by months
   d3.json("/api/v1.0/Month_heatmap_dropdown")
     .then(i => {
       // Get the dropdown/select element
@@ -53,12 +55,13 @@ function init() {
   heatmap2("JANUARY");
 }
 
-// Function that runs whenever the dropdown is changed
+// Function that runs whenever the dropdown is changed for first heatmap
 function optionChanged1(newlocation) {
   console.log("Change", newlocation);
   heatmap(newlocation);
 }
-// function that runs whenever the dropdown is changed
+
+// function that runs whenever the dropdown is changed for bar chart
 // this function is in the HTML and is called with an input called 'this.value'
 // that comes from the select element (dropdown)
 function optionChanged2(newlocation2){
@@ -66,37 +69,39 @@ function optionChanged2(newlocation2){
   // one way is to recall each function
   createBar(newlocation2)
 };
-  // Function that runs whenever the dropdown is changed
+
+  // Function that runs whenever the dropdown is changed for heatmap by months
 function optionChanged3(newlocation) {
   console.log("Change", newlocation);
   heatmap2(newlocation);
 };
 
-// Alex code Call the init() function to start the initialization process
+// Call the init() function to start the initialization process for heat map
 init();
 let myMap = L.map("map", {
   center: [41.8781, -87.6298], // Set center to Chicago's coordinates
   zoom: 12,
 });
 
-// Adding the tile layer
+// Adding the tile layer for first heat map
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution:
     '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
 }).addTo(myMap);
 
-// Cara's code
+// Call the init() function to start the initialization process for heat map by months
 let myMap2 = L.map("map2", {
   center: [41.8781, -87.6298], // Set center to Chicago's coordinates
   zoom: 12,
 });
 
-// Adding the tile layer
+// Adding the tile layer for second heat map
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution:
     '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
 }).addTo(myMap2);
 
+// pulls lat and lon into array for first heat map
 function heatmap(crime) {
   d3.json("/api/v1.0/chicago_crime_heatmap")
     .then(function (data) {
@@ -124,7 +129,7 @@ function heatmap(crime) {
     });
 }
 
-// No changes in the getLocationCoordinates() function
+// No changes in the getLocationCoordinates() function for first heat map
 function getLocationCoordinates(locationString) {
   let regex = /\((-?\d+\.\d+),\s*(-?\d+\.\d+)\)/;
   let match = regex.exec(locationString);
@@ -138,6 +143,7 @@ function getLocationCoordinates(locationString) {
   return null;
 }
 
+// pulls data from flask route to create bar chart
 function createBar(location){
   // code that makes bar chart at id='bar'
     d3.json("/api/v1.0/barcharts").then(data => {
@@ -169,6 +175,7 @@ function createBar(location){
   // console.log(`This function generates bar chart of ${id} `)
 }
 
+// pulls lat and lon into array for second heat map
 function heatmap2(crime) {
   d3.json("/api/v1.0/chicago_time_heatmap")
     .then(function (data) {
@@ -199,7 +206,7 @@ function heatmap2(crime) {
     });
 }
 
-// No changes in the getLocationCoordinates() function
+// No changes in the getLocationCoordinates() function for second heat map
 function getLocationCoordinates(locationString) {
   let regex = /\((-?\d+\.\d+),\s*(-?\d+\.\d+)\)/;
   let match = regex.exec(locationString);

@@ -31,11 +31,12 @@ app = Flask(__name__)
 # Flask Routes
 #################################################
 
+# main page for dashboard
 @app.route("/")
 def welcome():
     return render_template("index.html")
 
-
+# route used for the crime heatmap drop down menu
 @app.route("/api/v1.0/crime_heatmap_dropdown")
 def names():
     # Create our session (link) from Python to the DB
@@ -56,6 +57,7 @@ def names():
 
     return jsonify(all_crimes)
 
+# route used for the crime heat map data
 @app.route("/api/v1.0/chicago_crime_heatmap")
 def others():
     # Create our session (link) from Python to the DB
@@ -76,6 +78,7 @@ def others():
         all_crimes.append(crimes_dict)
     return jsonify(all_crimes)
 
+# route used for the location description drop down menu
 @app.route("/api/v1.0/dropdown")
 def names2():
     # Create our session (link) from Python to the DB
@@ -94,6 +97,7 @@ def names2():
 
     return jsonify(all_crimes)
 
+# route used for the bar chart data
 @app.route("/api/v1.0/barcharts")
 def others2():
     # Create our session (link) from Python to the DB
@@ -117,6 +121,7 @@ def others2():
 
     return jsonify(all_crimes)
 
+# route used for the crime by month heat map drop down menu
 @app.route("/api/v1.0/Month_heatmap_dropdown")
 def names3():
     # Create our session (link) from Python to the DB
@@ -137,6 +142,7 @@ def names3():
 
     return jsonify(all_crimes3)
 
+# route used for the crime by month data heat map
 @app.route("/api/v1.0/chicago_time_heatmap")
 def others3():
     # Create our session (link) from Python to the DB

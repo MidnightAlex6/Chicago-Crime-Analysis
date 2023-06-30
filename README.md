@@ -2,6 +2,10 @@
 
 # Chicago Crime Analysis
 
+## Background
+
+The City of Chicago has a historical reputation for violent crime. Our group was fascinated by this topic and we proposed a more in-depth exploration of different types of crimes that happen across the city. We plan to make an interactive dashboard using crime data provided from the Chicago data portal of crimes in 2023 to analyze and see what insights can be drawn from them. Our dashboard will include a heat map of all the crimes that happened in Chicago with an interactive drop down to filter through specific types of primary crimes that have occurred throughout the city. A bar chart of top 10 primary types of crime with an interactive drop down menu allowing users to filter through different location descriptions. A heat map of total crimes in Chicago with an interactive drop down that will allow users to filter through the months. To tackle this issue effectively, we leveraged a wide array of powerful tools and technologies including SQL, Flask, Python, HTML/CSS, and JavaScript, D3 library, Leaflet, Bootstrap, and Plotly. Through our collaborative efforts, we aim to uncover valuable insights that can aid in understanding the underlying dynamics of crime in Chicago.
+
 ## File Structure
 
 - Python Folder
@@ -23,3 +27,23 @@
 - Templates Folder
   - index.html - HTML file that sets up the structure and layout of our webpage
 - App.py - file for our Flask API and all the different routes used
+
+
+## Instructions
+
+### Database Creation
+
+- Downloaded the crime data from the City of Chicago's website as a CSV file.
+
+- Imported the CSV file into a Jupyter Notebook for data cleaning and manipulation.
+
+- Performed data cleaning tasks such as deleting irrelevant columns, separating the date and time information, and creating a new column to indicate the month of each crime.
+
+- Exported the cleaned dataset as a new CSV file.
+
+- Imported the CSV file into DB Browser for SQL.
+
+- Created a new database named "Crimes_2023db" in DB Browser for SQL.
+
+- Added an ID column to the database as a primary key.
+

@@ -14,6 +14,14 @@ The City of Chicago has a historical reputation for violent crime. Our group was
 - [Lisa Maccio Maretto](https://github.com/lmacciomaretto)
 - [Sanja Kesic](https://github.com/SanjaKesic)
 
+## Screenshots of Dashboard
+
+![Heatmap_by_type_of_crime](https://github.com/MidnightAlex6/Chicago-Crime-Analysis/assets/126301312/4bef7e29-7d1e-4841-a41f-e9e9be035dd2)
+
+![Barchart_by_location](https://github.com/MidnightAlex6/Chicago-Crime-Analysis/assets/126301312/4815442b-a98c-4a92-8b09-8810857b49d7)
+
+![Heatmap_by_months](https://github.com/MidnightAlex6/Chicago-Crime-Analysis/assets/126301312/cc95d42e-eafd-4007-b57e-015bfc41675c)
+
 ## File Structure
 
 - Python Folder
